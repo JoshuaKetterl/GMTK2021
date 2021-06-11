@@ -12,7 +12,8 @@ public class Joinable : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        joinedInputs = new List<Joinable>();
+        joinedOutputs = new List<Joinable>();
     }
 
     // Update is called once per frame
@@ -21,18 +22,43 @@ public class Joinable : MonoBehaviour
         
     }
 
-    public virtual List<bool> getInput()
+    public void MakeConnection(Joinable input)
+    {
+        joinedInputs.Add(input);
+    }
+
+    public void RemoveConnection(Joinable output)
+    {
+        //TODO, lookup how to use List.Find by object reference
+    }
+
+    public void RemoveAllConnections()
+    {
+        foreach (Joinable input in joinedInputs)
+        {
+            //Cleanup joins here
+        }
+
+        foreach (Joinable output in joinedOutputs)
+        {
+            //Cleanup joins here
+        }
+
+        joinedInputs.Clear();
+        joinedOutputs.Clear();
+    }
+
+    public virtual List<bool> GetInputs()
     {
         List<bool> results = new List<bool>();
         foreach(Joinable input in joinedInputs)
         {
-            results.Add(input.getOutput);
+            results.Add(input.GetOutput());
         }
-
         return results;
     }
 
-    public bool getOutput()
+    public bool GetOutput()
     {
         return output;
     }
