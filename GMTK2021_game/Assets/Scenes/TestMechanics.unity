@@ -138,7 +138,7 @@ GameObject:
   - component: {fileID: 419039803}
   m_Layer: 7
   m_Name: box
-  m_TagString: Joinable
+  m_TagString: CanPickUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -585,12 +585,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPickedUp: 0
-  rayDistance: 50
+  rayDistance: 1.5
   holdPoint: {fileID: 1498838310}
   throwVelocity: 5
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!1 &1262743011
 GameObject:
   m_ObjectHideFlags: 0

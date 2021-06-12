@@ -7,9 +7,13 @@ public class PickUpObjects : MonoBehaviour
     [SerializeField] private bool isPickedUp;
     [SerializeField] private float rayDistance;
     [SerializeField] private Transform holdPoint;
-    //[SerializeField] private Transform rayPoint;
     [SerializeField] private float throwVelocity;
-    [SerializeField] private LayerMask layerMask;
+
+    private Vector2 rayDirection = Vector2.right;
+    private Vector2 axis;
+
+    private bool holdButtonDown;
+    private bool holdButtonUp;
 
     void Start()
     {
@@ -18,35 +22,66 @@ public class PickUpObjects : MonoBehaviour
 
     void Update()
     {
-        RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, Vector2.right * transform.localScale.x, rayDistance);
+        axis.x = Input.GetAxis("Horizontal");
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (!isPickedUp)
-            {
-                if (raycastHit2D.collider != null && raycastHit2D.collider.CompareTag("CanPickUp"))
-                {
-                    isPickedUp = true;
-                }
-            }
-            else if(!Physics2D.OverlapPoint(holdPoint.position, layerMask))
-            {
-                isPickedUp = false;
+            holdButtonDown = true;
+            holdButtonUp = false;
+        }
+        else if (Input.GetKeyUp(KeyCode.E))
+        {
+            holdButtonDown = false;
+            holdButtonUp = true;
+        }
+        /*else
+        {
+            holdButtonDown = false;
+            holdButtonUp = false;
+        }*/
+    }
 
-                if (raycastHit2D.collider.gameObject.GetComponent<Rigidbody2D>() != null)
-                {
-                    raycastHit2D.collider.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(transform.localScale.x, 1) * throwVelocity;
-                }
+    void FixedUpdate()
+    {
+        FlipRay();
+
+        RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, rayDirection * transform.localScale, rayDistance);
+
+        if (raycastHit2D.collider != null && raycastHit2D.collider.CompareTag("CanPickUp"))
+        {
+            if (holdButtonDown)
+            {
+                raycastHit2D.collider.gameObject.transform.parent = holdPoint;
+                raycastHit2D.collider.gameObject.transform.position = holdPoint.position;
+                raycastHit2D.collider.gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
+                holdButtonDown = false;
+            }
+            else if (holdButtonUp)
+            {
+                raycastHit2D.collider.gameObject.transform.parent = null;
+                raycastHit2D.collider.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
+                raycastHit2D.collider.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 1) * throwVelocity;
+                holdButtonUp = false;
             }
         }
 
-        if (isPickedUp)
-            raycastHit2D.collider.gameObject.transform.position = holdPoint.position;
+    }
+
+    void FlipRay()
+    {
+        if (axis.x < 0)
+        {
+            rayDirection = Vector2.left;
+        }
+        else if (axis.x > 0)
+        {
+            rayDirection = Vector2.right;
+        }
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position, transform.position + rayDistance * transform.localScale.x * Vector3.right);
+        Gizmos.DrawLine(transform.position, transform.position + rayDistance * (Vector3)rayDirection);
     }
 }

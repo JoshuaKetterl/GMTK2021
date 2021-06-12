@@ -22,10 +22,13 @@ public class PlayerMovement : MonoBehaviour
     private float registerJumpBeforeLandingTimer;
     private bool jumpAfterLanding;
 
+    private SpriteRenderer playerSpriteRenderer;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         boxCollider2D = GetComponent<BoxCollider2D>();
+        playerSpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -58,6 +61,8 @@ public class PlayerMovement : MonoBehaviour
         movement.y = Input.GetAxis("Vertical");
 
         transform.position += movementSpeed * Time.deltaTime * movement;
+
+        FlipPlayer();
 
         print(rb.gravityScale);
     }
@@ -108,5 +113,13 @@ public class PlayerMovement : MonoBehaviour
         coyoteTimeCounter = 0;
         //registerJumpBeforeLandingTimer = 0;
         jumpAfterLanding = false;
+    }
+
+    private void FlipPlayer()
+    {
+        if (movement.x < 0)
+            playerSpriteRenderer.flipX = true;
+        else if (movement.x > 0)
+            playerSpriteRenderer.flipX = false;
     }
 }
