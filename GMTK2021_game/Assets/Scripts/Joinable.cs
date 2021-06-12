@@ -1,19 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Joinable : MonoBehaviour
 {
+    public int ID;
     private bool output = false;
 
-    private List<Joinable> joinedInputs;
-    private List<Joinable> joinedOutputs;
+    public List<Joinable> joinedInputs; // Nodes which connect to this Nodes Input
+    public List<Joinable> joinedOutputs; // Nodes which this Node outputs a signal to
 
     // Start is called before the first frame update
     void Start()
     {
         joinedInputs = new List<Joinable>();
         joinedOutputs = new List<Joinable>();
+
+        ID = JoinManager.GetUniqueID();
     }
 
     // Update is called once per frame
@@ -22,33 +26,42 @@ public class Joinable : MonoBehaviour
         
     }
 
-    public void MakeConnection(Joinable input)
+    public void AddOutput(Joinable output)
     {
-        joinedInputs.Add(input);
+        if (joinedOutputs.Any(x => x.ID == output.ID))
+        { // if this connection already exists, remove it
+            RemoveOutput(output);
+        }
+        else
+        { // otherwise add the connection
+            joinedOutputs.Add(output);
+            output.joinedInputs.Add(this);
+        }
     }
 
-    public void RemoveConnection(Joinable output)
+    public void RemoveOutput(Joinable output)
     {
-        //TODO, lookup how to use List.Find by object reference
+        joinedOutputs.RemoveAll(x => x.ID == output.ID);
+        output.joinedInputs.RemoveAll(x => x.ID == this.ID);
     }
 
     public void RemoveAllConnections()
     {
         foreach (Joinable input in joinedInputs)
         {
-            //Cleanup joins here
+            input.joinedOutputs.RemoveAll(x => x.ID == this.ID);
         }
 
         foreach (Joinable output in joinedOutputs)
         {
-            //Cleanup joins here
+            output.joinedInputs.RemoveAll(x => x.ID == this.ID);
         }
 
         joinedInputs.Clear();
         joinedOutputs.Clear();
     }
 
-    public virtual List<bool> GetInputs()
+    public List<bool> GetInputs()
     {
         List<bool> results = new List<bool>();
         foreach(Joinable input in joinedInputs)
@@ -62,4 +75,5 @@ public class Joinable : MonoBehaviour
     {
         return output;
     }
+
 }
