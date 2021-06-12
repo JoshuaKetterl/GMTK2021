@@ -7,6 +7,7 @@ public class Joinable : MonoBehaviour
 {
     public int ID;
     private bool output = false;
+    private bool joinInProgress = false;
 
     public List<Joinable> joinedInputs; // Nodes which connect to this Nodes Input
     public List<Joinable> joinedOutputs; // Nodes which this Node outputs a signal to
@@ -24,6 +25,39 @@ public class Joinable : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void OnMouseDown()
+    {
+        joinInProgress = true;
+    }
+    private void OnMouseDrag()
+    {
+        if (joinInProgress)
+        {
+            JoinManager.RenderJoin(transform.position, Input.mousePosition);
+        }
+    }
+
+    private void OnMouseUp()
+    {
+        if (joinInProgress)
+        {
+            Collider[] hitColliders = Physics.OverlapSphere(Input.mousePosition, 0);
+            for (int i = 0; i < hitColliders.Length; i++)
+            {
+                if (hitColliders[i].tag == "Joinable")
+                {
+                    AddOutput(hitColliders[i].gameObject.GetComponent<Joinable>());
+
+                    //DEBUG
+                    print("Connection Made");
+
+                    break;
+                }
+            }
+        }
+        joinInProgress = false;
     }
 
     public void AddOutput(Joinable output)

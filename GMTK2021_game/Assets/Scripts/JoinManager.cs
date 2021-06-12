@@ -34,16 +34,21 @@ public class JoinManager : MonoBehaviour
         {
             foreach (Joinable input in output.joinedOutputs)
             {
-                Vector3 midpoint = new Vector3(input.transform.position.x, output.transform.position.y);
-                RenderJoin(input.transform.position, midpoint);
-                RenderJoin(midpoint, output.transform.position);
+                RenderJoin(input.transform.position, output.transform.position);
             }
         }
     }
 
-    private void RenderJoin(Vector3 start, Vector3 end)
+    public static void RenderJoin(Vector3 start, Vector3 end)
     {
-        //render connection here
+        Vector3 midpoint = new Vector3(start.x, end.y);
+        DrawJoinSegment(start, midpoint);
+        DrawJoinSegment(midpoint, end);
+    }
+
+    private static void DrawJoinSegment(Vector3 start, Vector3 end)
+    {
+        //Render One Line of connection here
     }
 
     public void AddNode(Joinable j)
