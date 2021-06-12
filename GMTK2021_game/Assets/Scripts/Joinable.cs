@@ -35,7 +35,8 @@ public class Joinable : MonoBehaviour
     {
         if (joinInProgress)
         {
-            JoinManager.RenderJoin(transform.position, Input.mousePosition);
+            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            JoinManager.RenderJoin(transform.position, worldPosition);
         }
     }
 
@@ -43,7 +44,13 @@ public class Joinable : MonoBehaviour
     {
         if (joinInProgress)
         {
-            Collider[] hitColliders = Physics.OverlapSphere(Input.mousePosition, 0);
+            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Collider2D[] hitColliders = Physics2D.OverlapPointAll(worldPosition);
+
+            //DEBUG
+            print("mouse pos:" + worldPosition.x + ", " + worldPosition.y);
+            print("joinable pos:" + transform.position.x + ", " + transform.position.y);
+
             for (int i = 0; i < hitColliders.Length; i++)
             {
                 if (hitColliders[i].tag == "Joinable")

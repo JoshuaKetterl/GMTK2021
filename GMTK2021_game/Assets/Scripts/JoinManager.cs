@@ -48,7 +48,7 @@ public class JoinManager : MonoBehaviour
 
     private static void DrawJoinSegment(Vector3 start, Vector3 end)
     {
-        //Render One Line of connection here
+        // Draw Line Here
     }
 
     public void AddNode(Joinable j)
