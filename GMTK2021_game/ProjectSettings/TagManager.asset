@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CanPickUp
   - Joinable
+  - Door
   layers:
   - Default
   - TransparentFX

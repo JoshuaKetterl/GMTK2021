@@ -24,7 +24,13 @@ public class Joinable : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    private void OnMouseOver()
+    {
+        if (Input.GetButtonDown("Fire2"))
+            RemoveAllConnections();
     }
 
     private void OnMouseDown()
@@ -53,9 +59,27 @@ public class Joinable : MonoBehaviour
 
             for (int i = 0; i < hitColliders.Length; i++)
             {
-                if (hitColliders[i].tag == "Joinable")
+                if (hitColliders[i].CompareTag("Door") && hitColliders[i].gameObject.GetComponent<Joinable>().joinedInputs.Count < 1) //the last condition doesn't allow doors to have more than one INPUT
                 {
                     AddOutput(hitColliders[i].gameObject.GetComponent<Joinable>());
+
+                    //DEBUG
+                    print("Connection Made");
+
+                    break;
+                }
+                //if you drag a door over a box then the box will become INPUT for the door and the door will be OUTPUT 
+                else if (gameObject.CompareTag("Door")
+                    && hitColliders[i].CompareTag("CanPickUp")
+                    && hitColliders[i].gameObject.GetComponent<Joinable>().joinedInputs.Count < 1) //the last condition doesn't allow doors to have more than one INPUT
+                {
+                    var temp = hitColliders[i].gameObject.GetComponent<Joinable>();
+
+                    if (!joinedInputs.Any(x => x.ID == temp.ID))
+                    {
+                        joinedInputs.Add(temp);
+                        temp.joinedOutputs.Add(this);
+                    }
 
                     //DEBUG
                     print("Connection Made");
@@ -102,7 +126,7 @@ public class Joinable : MonoBehaviour
         joinedOutputs.Clear();
     }
 
-    public List<bool> GetInputs()
+    /*public List<bool> GetInputs()
     {
         List<bool> results = new List<bool>();
         foreach(Joinable input in joinedInputs)
@@ -110,6 +134,14 @@ public class Joinable : MonoBehaviour
             results.Add(input.GetOutput());
         }
         return results;
+    }*/
+
+    public bool GetInput()
+    {
+        if (joinedInputs != null)
+            return joinedInputs[0].gameObject.GetComponent<BoxLogic>().ActivateBasedOnMovementDirection();
+        else
+            return false;
     }
 
     public bool GetOutput()
