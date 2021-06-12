@@ -5,7 +5,7 @@ using UnityEngine;
 public class JoinPool : MonoBehaviour
 {
 
-    [SerializeField] private GameObject pooledJoin;
+    [SerializeField] public GameObject pooledJoin;
 
     private readonly int maxJoins = 256;
     private bool notEnoughJoinsInPool = true;
@@ -17,6 +17,15 @@ public class JoinPool : MonoBehaviour
     void Start()
     {
         joins = new List<GameObject>();
+    }
+
+    public void DisableAll()
+    {
+        for (int i = 0; i < joins.Count; i++)
+        {
+            if (joins[i].activeInHierarchy)
+                joins[i].SetActive(false);
+        }
     }
 
     public GameObject GetJoin()

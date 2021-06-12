@@ -49,7 +49,7 @@ public class Joinable : MonoBehaviour
         if (joinInProgress)
         {
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            joinManager.RenderJoin(transform.position, worldPosition);
+            joinManager.UpdateMouseJoin(transform.position, worldPosition);
         }
     }
 
@@ -98,6 +98,7 @@ public class Joinable : MonoBehaviour
             */
 
         }
+        JoinManager.RemoveMouseJoin();
         joinInProgress = false;
     }
 
@@ -106,6 +107,7 @@ public class Joinable : MonoBehaviour
         if (joinedOutputs.Any(x => x.ID == output.ID))
         { // if this connection already exists, remove it
             RemoveOutput(output);
+            joinManager.UpdateStaticJoins();
         }
         else
         { // otherwise add the connection
@@ -114,6 +116,7 @@ public class Joinable : MonoBehaviour
             { //If output is valid, form connection
                 joinedOutputs.Add(output);
                 output.joinedInputs.Add(this);
+                joinManager.UpdateStaticJoins();
             } 
             // if output is Output Only Join (cannot take input) do nothing
         }

@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Join : MonoBehaviour
 {
-    public float timeToLive = 0.1f;
+    private float timeToLive = -1f;
 
     private void OnEnable()
     {
-        Invoke(nameof(Remove), timeToLive);
+        if(timeToLive > 0)
+            Invoke(nameof(Remove), timeToLive);
     }
 
     private void Remove()

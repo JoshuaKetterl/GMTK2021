@@ -20,9 +20,9 @@ public class JoinManager : MonoBehaviour
     [SerializeField] JoinPool VerticalJoins;
     [SerializeField] JoinPool ElbowJoins;
 
-    static Join mouseJoinHorizontal;
-    static Join mouseJoinVertical;
-    static Join mouseJoinElbow;
+    static GameObject mouseJoinHorizontal;
+    static GameObject mouseJoinVertical;
+    static GameObject mouseJoinElbow;
 
     public float joinSpriteScale = 10f;
 
@@ -33,34 +33,87 @@ public class JoinManager : MonoBehaviour
         {
             node.joinManager = this;
         }
+
+        mouseJoinHorizontal = Instantiate(HorizontalJoins.pooledJoin);
+        mouseJoinVertical = Instantiate(VerticalJoins.pooledJoin);
+        mouseJoinElbow = Instantiate(ElbowJoins.pooledJoin);
+
+        mouseJoinHorizontal.SetActive(false);
+        mouseJoinVertical.SetActive(false);
+        mouseJoinElbow.SetActive(false);
     }
 
     // Update is called once per frame
     public void UpdateStaticJoins()
     {
-        RenderJoins();
+        HorizontalJoins.DisableAll();
+        VerticalJoins.DisableAll();
+        ElbowJoins.DisableAll();
+
+        foreach (Joinable output in nodes)
+        {
+            foreach (Joinable input in output.joinedOutputs)
+            {
+                RenderJoin(output.transform.position, input.transform.position);
+            }
+        }
     }
 
-    public static void UpdateMouseJoin()
+    public void UpdateMouseJoin(Vector3 start, Vector3 end)
     {
+        Vector3 elbow = new Vector3(start.x, end.y);
+        Vector3 horzMidpoint, vertMidpoint;
 
+        float hScale = Math.Abs(start.x - end.x) * joinSpriteScale;
+        float vScale = Math.Abs(start.y - end.y) * joinSpriteScale;
+
+        //DEBUG
+        print("diff: " + Math.Abs(start.x - end.x) + "   hScale: " + hScale);
+
+        if (end.x > start.x)
+        {
+            if (end.y > start.y)
+            { // Q1 Upper Right
+                vertMidpoint = new Vector3(start.x, start.y + (Math.Abs(start.y - elbow.y)) / 2);
+                horzMidpoint = new Vector3(end.x - (Math.Abs(end.x - elbow.x) / 2), end.y);
+            }
+            else
+            { // Q4 Lower Right
+                vertMidpoint = new Vector3(start.x, start.y - (Math.Abs(start.y - elbow.y)) / 2);
+                horzMidpoint = new Vector3(end.x - (Math.Abs(end.x - elbow.x) / 2), end.y);
+            }
+        }
+        else
+        {
+            if (end.y > start.y)
+            { // Q2 Upper Left
+                vertMidpoint = new Vector3(start.x, start.y + (Math.Abs(start.y - elbow.y)) / 2);
+                horzMidpoint = new Vector3(end.x + (Math.Abs(end.x - elbow.x) / 2), end.y);
+            }
+            else
+            { // Q3 Lower Left
+                vertMidpoint = new Vector3(start.x, start.y - (Math.Abs(start.y - elbow.y)) / 2);
+                horzMidpoint = new Vector3(end.x + (Math.Abs(end.x - elbow.x) / 2), end.y);
+            }
+        }
+
+        mouseJoinHorizontal.transform.position = horzMidpoint;
+        mouseJoinVertical.transform.position = vertMidpoint;
+        mouseJoinElbow.transform.position = elbow;
+
+        mouseJoinHorizontal.transform.localScale = new Vector3(hScale, 1);
+        mouseJoinVertical.transform.localScale = new Vector3(1, vScale);
+
+        mouseJoinHorizontal.SetActive(true);
+        mouseJoinVertical.SetActive(true);
+        mouseJoinElbow.SetActive(true);
     }
 
     public static void RemoveMouseJoin()
     {
-
-    }
-
-    public void RenderJoins()
-        //TODO potentially
-    {
-        foreach(Joinable output in nodes)
-        {
-            foreach (Joinable input in output.joinedOutputs)
-            {
-                RenderJoin(input.transform.position, output.transform.position);
-            }
-        }
+        mouseJoinHorizontal.gameObject.SetActive(false);
+        mouseJoinVertical.gameObject.SetActive(false);
+        mouseJoinElbow.gameObject.SetActive(false);
     }
 
     public void RenderJoin(Vector3 start, Vector3 end)
@@ -115,6 +168,10 @@ public class JoinManager : MonoBehaviour
 
         joinH.transform.localScale = new Vector3(hScale, 1);
         joinV.transform.localScale = new Vector3(1, vScale);
+
+        //joinH.GetComponent<Join>().timeToLive = ttl;
+        //joinV.GetComponent<Join>().timeToLive = ttl;
+        //joinE.GetComponent<Join>().timeToLive = ttl;
 
         joinH.SetActive(true);
         joinV.SetActive(true);
