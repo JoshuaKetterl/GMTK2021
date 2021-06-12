@@ -14,8 +14,10 @@ public class DoorLogic : MonoBehaviour
 
     void Update()
     {
-        if(doorJoinable.joinedInputs != null)
-            isOpened = doorJoinable.GetInput();
+        if (doorJoinable.joinedInputs != null)
+        {
+            //isOpened = doorJoinable.GetInput();
+        }
 
         if (isOpened)
         {

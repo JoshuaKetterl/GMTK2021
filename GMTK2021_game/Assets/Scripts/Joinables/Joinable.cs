@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/*  Joinable
+ * ----------
+ * Base parent for Objects that can be joined together
+ */
 public class Joinable : MonoBehaviour
 {
     public int ID;
-    private bool output = false;
-    private bool joinInProgress = false;
+    public bool output = false;
+    public bool joinInProgress = false;
+
+    public JoinManager joinManager;
 
     public List<Joinable> joinedInputs; // Nodes which connect to this Nodes Input
     public List<Joinable> joinedOutputs; // Nodes which this Node outputs a signal to
@@ -33,38 +39,43 @@ public class Joinable : MonoBehaviour
             RemoveAllConnections();
     }
 
-    private void OnMouseDown()
+    public virtual void OnMouseDown()
     {
         joinInProgress = true;
     }
-    private void OnMouseDrag()
+
+    public virtual void OnMouseDrag()
     {
         if (joinInProgress)
         {
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            JoinManager.RenderJoin(transform.position, worldPosition);
+            joinManager.RenderJoin(transform.position, worldPosition);
         }
     }
 
-    private void OnMouseUp()
+    public virtual void OnMouseUp()
     {
         if (joinInProgress)
         {
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Collider2D[] hitColliders = Physics2D.OverlapPointAll(worldPosition);
 
-            //DEBUG
-            print("mouse pos:" + worldPosition.x + ", " + worldPosition.y);
-            print("joinable pos:" + transform.position.x + ", " + transform.position.y);
+            for (int i = 0; i < hitColliders.Length; i++)
+            {
+                Joinable hit = hitColliders[i].gameObject.GetComponent<Joinable>();
+                if(hit != null)
+                {
+                    AddOutput(hit);
+                }
+            }
 
+
+            /*
             for (int i = 0; i < hitColliders.Length; i++)
             {
                 if (hitColliders[i].CompareTag("Door") && hitColliders[i].gameObject.GetComponent<Joinable>().joinedInputs.Count < 1) //the last condition doesn't allow doors to have more than one INPUT
                 {
                     AddOutput(hitColliders[i].gameObject.GetComponent<Joinable>());
-
-                    //DEBUG
-                    print("Connection Made");
 
                     break;
                 }
@@ -81,17 +92,16 @@ public class Joinable : MonoBehaviour
                         temp.joinedOutputs.Add(this);
                     }
 
-                    //DEBUG
-                    print("Connection Made");
-
                     break;
                 }
             }
+            */
+
         }
         joinInProgress = false;
     }
 
-    public void AddOutput(Joinable output)
+    public virtual void AddOutput(Joinable output)
     {
         if (joinedOutputs.Any(x => x.ID == output.ID))
         { // if this connection already exists, remove it
@@ -99,18 +109,23 @@ public class Joinable : MonoBehaviour
         }
         else
         { // otherwise add the connection
-            joinedOutputs.Add(output);
-            output.joinedInputs.Add(this);
+
+            if (!(output is OutputOnlyJoin))
+            { //If output is valid, form connection
+                joinedOutputs.Add(output);
+                output.joinedInputs.Add(this);
+            } 
+            // if output is Output Only Join (cannot take input) do nothing
         }
     }
 
-    public void RemoveOutput(Joinable output)
+    public virtual void RemoveOutput(Joinable output)
     {
         joinedOutputs.RemoveAll(x => x.ID == output.ID);
         output.joinedInputs.RemoveAll(x => x.ID == this.ID);
     }
 
-    public void RemoveAllConnections()
+    public virtual void RemoveAllConnections()
     {
         foreach (Joinable input in joinedInputs)
         {
@@ -126,7 +141,7 @@ public class Joinable : MonoBehaviour
         joinedOutputs.Clear();
     }
 
-    /*public List<bool> GetInputs()
+    public List<bool> GetInputs()
     {
         List<bool> results = new List<bool>();
         foreach(Joinable input in joinedInputs)
@@ -134,15 +149,16 @@ public class Joinable : MonoBehaviour
             results.Add(input.GetOutput());
         }
         return results;
-    }*/
+    }
 
+    /*
     public bool GetInput()
     {
         if (joinedInputs != null)
             return joinedInputs[0].gameObject.GetComponent<BoxLogic>().ActivateBasedOnMovementDirection();
         else
             return false;
-    }
+    }*/
 
     public bool GetOutput()
     {
