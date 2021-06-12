@@ -24,8 +24,13 @@ public class PlayerMovement : MonoBehaviour
 
     private SpriteRenderer playerSpriteRenderer;
 
+    private bool isClimbing;
+
+    public Vector3 Movement { get => movement; }
+
     void Start()
     {
+        Physics2D.queriesStartInColliders = false;
         rb = GetComponent<Rigidbody2D>();
         boxCollider2D = GetComponent<BoxCollider2D>();
         playerSpriteRenderer = GetComponent<SpriteRenderer>();
@@ -60,33 +65,42 @@ public class PlayerMovement : MonoBehaviour
         movement.x = Input.GetAxis("Horizontal");
         movement.y = Input.GetAxis("Vertical");
 
-        transform.position += movementSpeed * Time.deltaTime * movement;
+        //transform.position += movementSpeed * Time.deltaTime * movement;
+        rb.velocity = new Vector2(movement.x * movementSpeed, rb.velocity.y);
+
+        if (movement.y != 0)
+            isClimbing = true;
+        else
+            isClimbing = false;
 
         FlipPlayer();
-
-        print(rb.gravityScale);
     }
 
     private void FixedUpdate()
     {
-        if (canJump || (CheckGround() && jumpAfterLanding))
-        {
-            Jump();
-        }
+        //LadderClimb();
 
-        if (canJump || CheckGround() || coyoteTimeCounter > 0)
+        if (!isClimbing && rb.gravityScale != 0)
         {
-            rb.gravityScale = 1f;
+            if (canJump || (CheckGround() && jumpAfterLanding))
+            {
+                Jump();
+            }
+
+            if (canJump || CheckGround() || coyoteTimeCounter > 0)
+            {
+                rb.gravityScale = 1f;
+            }
+            else if (rb.velocity.y < jumpVelocity / 1.7)
+            {
+                rb.gravityScale = fallGravity;
+            }
+            else if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
+            {
+                rb.gravityScale = lowJumpGravity;
+            }
+            else rb.gravityScale = 1f;
         }
-        else if (rb.velocity.y < jumpVelocity / 1.7)
-        {
-            rb.gravityScale = fallGravity;
-        }
-        else if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
-        {
-            rb.gravityScale = lowJumpGravity;
-        }
-        else rb.gravityScale = 1f;
     }
 
     private bool CheckGround()
@@ -121,5 +135,26 @@ public class PlayerMovement : MonoBehaviour
             playerSpriteRenderer.flipX = true;
         else if (movement.x > 0)
             playerSpriteRenderer.flipX = false;
+    }
+
+    private void LadderClimb()
+    {
+        rb.gravityScale = 0;
+        rb.velocity = Vector2.zero;
+
+        if (isClimbing)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, movement.y * movementSpeed);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        LadderClimb();
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        rb.gravityScale = fallGravity;
     }
 }
