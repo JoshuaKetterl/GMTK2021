@@ -74,6 +74,8 @@ public class PlayerMovement : MonoBehaviour
             isClimbing = false;
 
         FlipPlayer();
+
+        print(rb.gravityScale);
     }
 
     private void FixedUpdate()
@@ -150,11 +152,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        LadderClimb();
+        if(collision.CompareTag("Ladder"))
+        {
+            LadderClimb();
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        rb.gravityScale = fallGravity;
+        if (collision.CompareTag("Ladder"))
+        {
+            rb.gravityScale = fallGravity;
+        }
     }
 }
