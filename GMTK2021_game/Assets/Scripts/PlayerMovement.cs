@@ -211,7 +211,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FallingAnimation()
     {
-        if (rb.velocity.y < -0.2)
+        if (rb.velocity.y < -0.2 && !isClimbing)
         {
             animator.SetBool("Jumping", false);
             animator.SetBool("Falling", true);
