@@ -6,7 +6,7 @@ public class InputProximity : OutputOnlyJoin
 {
 
     private GameObject player;
-    [SerializeField] float range = 5;
+    [SerializeField] float range = 3;
 
     void Start()
     {
