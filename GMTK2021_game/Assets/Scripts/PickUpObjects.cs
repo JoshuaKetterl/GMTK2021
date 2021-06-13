@@ -7,7 +7,10 @@ public class PickUpObjects : MonoBehaviour
     [SerializeField] private bool isPickedUp;
     [SerializeField] private float rayDistance;
     [SerializeField] private Transform holdPoint;
-    [SerializeField] private float throwVelocity;
+    [SerializeField] private float defaultThrowVelocity;
+    private float throwVelocity;
+
+    private Vector3 defaultHoldPointPosition;
 
     private Vector2 rayDirection = Vector2.right;
     private Vector2 axis;
@@ -18,6 +21,7 @@ public class PickUpObjects : MonoBehaviour
     void Start()
     {
         Physics2D.queriesStartInColliders = false;
+        defaultHoldPointPosition = holdPoint.localPosition;
     }
 
     void Update()
@@ -63,7 +67,17 @@ public class PickUpObjects : MonoBehaviour
             {
                 raycastHit2D.collider.gameObject.transform.parent = null;
                 raycastHit2D.collider.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
-                raycastHit2D.collider.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 1) * throwVelocity;
+
+                if (rayDirection == Vector2.right)
+                {
+                    throwVelocity = defaultThrowVelocity;
+                    raycastHit2D.collider.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 1) * throwVelocity;
+                }
+                else
+                {
+                    throwVelocity = -defaultThrowVelocity;
+                    raycastHit2D.collider.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(1, -1) * throwVelocity;
+                }
             }
             holdButtonUp = false;
          }
@@ -75,10 +89,12 @@ public class PickUpObjects : MonoBehaviour
         if (axis.x < 0)
         {
             rayDirection = Vector2.left;
+            holdPoint.localPosition = new Vector3(-defaultHoldPointPosition.x, defaultHoldPointPosition.y, 0);
         }
         else if (axis.x > 0)
         {
             rayDirection = Vector2.right;
+            holdPoint.localPosition = new Vector3(defaultHoldPointPosition.x, defaultHoldPointPosition.y, 0);
         }
     }
 
