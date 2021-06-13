@@ -18,9 +18,14 @@ public class Joinable : MonoBehaviour
     public List<Joinable> joinedInputs; // Nodes which connect to this Nodes Input
     public List<Joinable> joinedOutputs; // Nodes which this Node outputs a signal to
 
+    [SerializeField] private float rayDistance = 10f;
+    private Transform target;
+
     // Start is called before the first frame update
     void Start()
     {
+        target = GameObject.FindGameObjectWithTag("Player").transform;
+
         joinedInputs = new List<Joinable>();
         joinedOutputs = new List<Joinable>();
 
@@ -30,6 +35,8 @@ public class Joinable : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //DetectPlayer();
+
         if (output)
         {
             // update appearance to active
@@ -56,6 +63,8 @@ public class Joinable : MonoBehaviour
 
     public virtual void OnMouseDrag()
     {
+        DetectPlayer();
+
         if (joinInProgress)
         {
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -149,4 +158,20 @@ public class Joinable : MonoBehaviour
         return output;
     }
 
+    protected void DetectPlayer()
+    {
+        RaycastHit2D ray2D = Physics2D.Raycast(this.transform.position, target.position - this.transform.position, rayDistance);
+
+        if (ray2D.collider != null)
+        {
+            print(ray2D.collider.name);
+            Debug.DrawLine(this.transform.position, ray2D.point, Color.red);
+
+            if (ray2D.collider.transform.CompareTag("Player"))
+            {
+                Debug.DrawLine(this.transform.position, ray2D.point, Color.green);
+                //DO SMTH WHEN IT SEES THE PLAYER
+            }
+        }
+    }
 }
