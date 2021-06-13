@@ -175,3 +175,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doorSwitchNode: {fileID: 0}
   animator: {fileID: 0}
+  DoorOpenEvent: event:/sfxDoorOpen
+  DoorCloseEvent: event:/sfxDoorClose

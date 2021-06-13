@@ -177,6 +177,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8fb54d9a66105c4cb3dd1e6baebadc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  JumpEvent: event:/sfxJump
+  LandingEvent: event:/sfxLand
   movementSpeed: 6
   jumpVelocity: 7
   fallGravity: 4.5
@@ -200,6 +202,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transitionAnimation: {fileID: 0}
   transitionTime: 1
+  LevelCompleteEvent: event:/sfxLevelComplete
 --- !u!95 &2674703188216358316
 Animator:
   serializedVersion: 3
