@@ -13,6 +13,11 @@ public class LevelManagement : MonoBehaviour
         StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + 1));
     }
 
+    void RestartLevel()
+    {
+        StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex));
+    }
+
     IEnumerator LoadLevel(int levelIndex)
     {
         transitionAnimation.SetTrigger("Start");
@@ -26,5 +31,7 @@ public class LevelManagement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("NextScene"))
             NextLevel();
+        else if (collision.gameObject.CompareTag("Restart"))
+            RestartLevel();
     }
 }

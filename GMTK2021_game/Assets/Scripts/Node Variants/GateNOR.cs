@@ -9,20 +9,24 @@ public class GateNOR : Joinable
         List<bool> inputs = base.GetInputs();
         bool success = true;
 
-        foreach (bool b in inputs)
+        //added the if statement that checks the size of the inputs list. without that it returns true even if there are no inputs
+        if (inputs.Count > 0)
         {
-            if (b)
+            foreach (bool b in inputs)
             {
-                success = false;
+                if (b)
+                {
+                    success = false;
+                }
             }
-        }
-        if (success)
-        {
-            base.output = true;
-        }
-        else
-        {
-            base.output = false;
+            if (success)
+            {
+                base.output = true;
+            }
+            else
+            {
+                base.output = false;
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ public class GateAND : Joinable
                 fail = true;
             }
         }
-        if(trueCount > 2 && !fail)
+        if(trueCount > 1 && !fail)
         {
             base.output = true;
         }

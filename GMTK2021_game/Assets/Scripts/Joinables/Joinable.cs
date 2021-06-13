@@ -59,6 +59,8 @@ public class Joinable : MonoBehaviour
 
     public virtual void OnMouseDrag()
     {
+        Physics2D.queriesHitTriggers = false;
+
         DetectPlayer();
 
         if (joinInProgress)
@@ -66,6 +68,8 @@ public class Joinable : MonoBehaviour
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             joinManager.UpdateMouseJoin(transform.position, worldPosition);
         }
+
+        Physics2D.queriesHitTriggers = true;
     }
 
     public virtual void OnMouseUp()

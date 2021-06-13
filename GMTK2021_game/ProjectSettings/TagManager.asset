@@ -9,6 +9,7 @@ TagManager:
   - Door
   - Ladder
   - NextScene
+  - Restart
   layers:
   - Default
   - TransparentFX
