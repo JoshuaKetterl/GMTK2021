@@ -36,7 +36,10 @@ public class Joinable : MonoBehaviour
     private void OnMouseOver()
     {
         if (Input.GetButtonDown("Fire2"))
+        {
             RemoveAllConnections();
+            joinManager.UpdateStaticJoins();
+        }
     }
 
     public virtual void OnMouseDown()
@@ -63,7 +66,7 @@ public class Joinable : MonoBehaviour
             for (int i = 0; i < hitColliders.Length; i++)
             {
                 Joinable hit = hitColliders[i].gameObject.GetComponent<Joinable>();
-                if(hit != null)
+                if(hit != null && hit.ID != this.ID)
                 {
                     AddOutput(hit);
                 }
@@ -98,7 +101,7 @@ public class Joinable : MonoBehaviour
             */
 
         }
-        JoinManager.RemoveMouseJoin();
+        joinManager.RemoveMouseJoin();
         joinInProgress = false;
     }
 

@@ -20,9 +20,9 @@ public class JoinManager : MonoBehaviour
     [SerializeField] JoinPool VerticalJoins;
     [SerializeField] JoinPool ElbowJoins;
 
-    static GameObject mouseJoinHorizontal;
-    static GameObject mouseJoinVertical;
-    static GameObject mouseJoinElbow;
+    GameObject mouseJoinHorizontal;
+    GameObject mouseJoinVertical;
+    GameObject mouseJoinElbow;
 
     public float joinSpriteScale = 10f;
 
@@ -61,8 +61,9 @@ public class JoinManager : MonoBehaviour
 
     public void UpdateMouseJoin(Vector3 start, Vector3 end)
     {
-        Vector3 elbow = new Vector3(start.x, end.y);
+        Vector3 elbow = new Vector3(start.x, end.y, -0.2f);
         Vector3 horzMidpoint, vertMidpoint;
+        Quaternion eRotation = Quaternion.identity;
 
         float hScale = Math.Abs(start.x - end.x) * joinSpriteScale;
         float vScale = Math.Abs(start.y - end.y) * joinSpriteScale;
@@ -76,6 +77,7 @@ public class JoinManager : MonoBehaviour
             { // Q1 Upper Right
                 vertMidpoint = new Vector3(start.x, start.y + (Math.Abs(start.y - elbow.y)) / 2);
                 horzMidpoint = new Vector3(end.x - (Math.Abs(end.x - elbow.x) / 2), end.y);
+                eRotation.x = 90;
             }
             else
             { // Q4 Lower Right
@@ -89,11 +91,13 @@ public class JoinManager : MonoBehaviour
             { // Q2 Upper Left
                 vertMidpoint = new Vector3(start.x, start.y + (Math.Abs(start.y - elbow.y)) / 2);
                 horzMidpoint = new Vector3(end.x + (Math.Abs(end.x - elbow.x) / 2), end.y);
+                eRotation.z = 90;
             }
             else
             { // Q3 Lower Left
                 vertMidpoint = new Vector3(start.x, start.y - (Math.Abs(start.y - elbow.y)) / 2);
                 horzMidpoint = new Vector3(end.x + (Math.Abs(end.x - elbow.x) / 2), end.y);
+                eRotation.y = 90;
             }
         }
 
@@ -103,13 +107,14 @@ public class JoinManager : MonoBehaviour
 
         mouseJoinHorizontal.transform.localScale = new Vector3(hScale, 1);
         mouseJoinVertical.transform.localScale = new Vector3(1, vScale);
+        mouseJoinElbow.transform.localRotation = eRotation;
 
         mouseJoinHorizontal.SetActive(true);
         mouseJoinVertical.SetActive(true);
         mouseJoinElbow.SetActive(true);
     }
 
-    public static void RemoveMouseJoin()
+    public void RemoveMouseJoin()
     {
         mouseJoinHorizontal.gameObject.SetActive(false);
         mouseJoinVertical.gameObject.SetActive(false);
@@ -118,11 +123,12 @@ public class JoinManager : MonoBehaviour
 
     public void RenderJoin(Vector3 start, Vector3 end)
     {
-        Vector3 elbow = new Vector3(start.x, end.y);
+        Vector3 elbow = new Vector3(start.x, end.y, -0.2f);
         Vector3 horzMidpoint, vertMidpoint;
 
         float hScale = Math.Abs(start.x - end.x) * joinSpriteScale;
         float vScale = Math.Abs(start.y - end.y) * joinSpriteScale;
+        Quaternion eRotation = Quaternion.identity;
 
         //DEBUG
         print("diff: " + Math.Abs(start.x - end.x) + "   hScale: " + hScale);
@@ -133,6 +139,7 @@ public class JoinManager : MonoBehaviour
             { // Q1 Upper Right
                 vertMidpoint = new Vector3(start.x, start.y + (Math.Abs(start.y - elbow.y)) / 2);
                 horzMidpoint = new Vector3(end.x - (Math.Abs(end.x - elbow.x) / 2), end.y);
+                eRotation.x = 90;
             }
             else
             { // Q4 Lower Right
@@ -146,17 +153,19 @@ public class JoinManager : MonoBehaviour
             { // Q2 Upper Left
                 vertMidpoint = new Vector3(start.x, start.y + (Math.Abs(start.y - elbow.y)) / 2);
                 horzMidpoint = new Vector3(end.x + (Math.Abs(end.x - elbow.x) / 2), end.y);
+                eRotation.z = 90;
             }
             else
             { // Q3 Lower Left
                 vertMidpoint = new Vector3(start.x, start.y - (Math.Abs(start.y - elbow.y)) / 2);
                 horzMidpoint = new Vector3(end.x + (Math.Abs(end.x - elbow.x) / 2), end.y);
+                eRotation.y = 90;
             }
         }
-        DrawJoin(horzMidpoint, vertMidpoint, elbow, hScale, vScale);
+        DrawJoin(horzMidpoint, vertMidpoint, elbow, hScale, vScale, eRotation);
     }
 
-    public void DrawJoin(Vector3 horzMidpoint, Vector3 vertMidpoint, Vector3 elbow, float hScale, float vScale)
+    public void DrawJoin(Vector3 horzMidpoint, Vector3 vertMidpoint, Vector3 elbow, float hScale, float vScale, Quaternion eRotation)
     {
         GameObject joinH = HorizontalJoins.GetJoin();
         GameObject joinV = VerticalJoins.GetJoin();
@@ -168,6 +177,7 @@ public class JoinManager : MonoBehaviour
 
         joinH.transform.localScale = new Vector3(hScale, 1);
         joinV.transform.localScale = new Vector3(1, vScale);
+        joinE.transform.localRotation = eRotation;
 
         //joinH.GetComponent<Join>().timeToLive = ttl;
         //joinV.GetComponent<Join>().timeToLive = ttl;
