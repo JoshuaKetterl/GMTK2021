@@ -24,7 +24,7 @@ public class Joinable : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        target = GameObject.FindGameObjectWithTag("Player").transform;
+        target = joinManager.Target;
 
         joinedInputs = new List<Joinable>();
         joinedOutputs = new List<Joinable>();
@@ -35,8 +35,6 @@ public class Joinable : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //DetectPlayer();
-
         if (output)
         {
             // update appearance to active

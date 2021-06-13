@@ -26,10 +26,18 @@ public class JoinManager : MonoBehaviour
 
     public float joinSpriteScale = 10f;
 
+    private Transform target;
+    public Transform Target { get => target; }
+
+    private void Awake()
+    {
+        target = GameObject.FindGameObjectWithTag("Player").transform;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        foreach(Joinable node in nodes)
+        foreach (Joinable node in nodes)
         {
             node.joinManager = this;
         }
