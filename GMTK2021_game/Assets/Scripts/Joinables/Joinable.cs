@@ -19,13 +19,11 @@ public class Joinable : MonoBehaviour
     public List<Joinable> joinedOutputs; // Nodes which this Node outputs a signal to
 
     [SerializeField] private float rayDistance = 10f;
-    private Transform target;
+    public Transform target;
 
     // Start is called before the first frame update
     void Start()
     {
-        target = joinManager.Target;
-
         joinedInputs = new List<Joinable>();
         joinedOutputs = new List<Joinable>();
 
@@ -165,10 +163,14 @@ public class Joinable : MonoBehaviour
             print(ray2D.collider.name);
             Debug.DrawLine(this.transform.position, ray2D.point, Color.red);
 
+            joinInProgress = false;
+            joinManager.RemoveMouseJoin();
+
             if (ray2D.collider.transform.CompareTag("Player"))
             {
                 Debug.DrawLine(this.transform.position, ray2D.point, Color.green);
                 //DO SMTH WHEN IT SEES THE PLAYER
+                joinInProgress = true;
             }
         }
     }

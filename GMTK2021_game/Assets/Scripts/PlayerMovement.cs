@@ -82,8 +82,8 @@ public class PlayerMovement : MonoBehaviour
     {
         //LadderClimb();
 
-        if (!isClimbing && rb.gravityScale != 0)
-        {
+        /*if (!isClimbing && rb.gravityScale != 0)
+        {*/
             if (canJump || (CheckGround() && jumpAfterLanding))
             {
                 Jump();
@@ -102,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
                 rb.gravityScale = lowJumpGravity;
             }
             else rb.gravityScale = 1f;
-        }
+        //}
     }
 
     private bool CheckGround()
@@ -141,11 +141,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void LadderClimb()
     {
-        rb.gravityScale = 0;
-        rb.velocity = Vector2.zero;
-
         if (isClimbing)
         {
+            rb.gravityScale = 0;
+            rb.velocity = Vector2.zero;
             rb.velocity = new Vector2(rb.velocity.x, movement.y * movementSpeed);
         }
     }
