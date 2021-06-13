@@ -30,7 +30,14 @@ public class Joinable : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (output)
+        {
+            // update appearance to active
+        }
+        else
+        {
+            //update appearance to inactive
+        }
     }
 
     private void OnMouseOver()
@@ -71,35 +78,6 @@ public class Joinable : MonoBehaviour
                     AddOutput(hit);
                 }
             }
-
-
-            /*
-            for (int i = 0; i < hitColliders.Length; i++)
-            {
-                if (hitColliders[i].CompareTag("Door") && hitColliders[i].gameObject.GetComponent<Joinable>().joinedInputs.Count < 1) //the last condition doesn't allow doors to have more than one INPUT
-                {
-                    AddOutput(hitColliders[i].gameObject.GetComponent<Joinable>());
-
-                    break;
-                }
-                //if you drag a door over a box then the box will become INPUT for the door and the door will be OUTPUT 
-                else if (gameObject.CompareTag("Door")
-                    && hitColliders[i].CompareTag("CanPickUp")
-                    && hitColliders[i].gameObject.GetComponent<Joinable>().joinedInputs.Count < 1) //the last condition doesn't allow doors to have more than one INPUT
-                {
-                    var temp = hitColliders[i].gameObject.GetComponent<Joinable>();
-
-                    if (!joinedInputs.Any(x => x.ID == temp.ID))
-                    {
-                        joinedInputs.Add(temp);
-                        temp.joinedOutputs.Add(this);
-                    }
-
-                    break;
-                }
-            }
-            */
-
         }
         joinManager.RemoveMouseJoin();
         joinInProgress = false;

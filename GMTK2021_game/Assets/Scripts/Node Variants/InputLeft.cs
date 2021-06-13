@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputRight : OutputOnlyJoin
+public class InputLeft : OutputOnlyJoin
 {
     void Update()
     {
-        if(Input.GetAxis("Horizontal") > 0)
+        if (Input.GetAxis("Horizontal") < 0)
         {
             base.output = true;
         }
