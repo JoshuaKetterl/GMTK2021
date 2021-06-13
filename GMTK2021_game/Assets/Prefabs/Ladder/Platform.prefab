@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8736401816216504425}
   - component: {fileID: 8736401816216504438}
   m_Layer: 6
-  m_Name: Ladder Platform
+  m_Name: Platform
   m_TagString: Ladder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 495656769
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: cd8579061f3c26f44873f9d7c81f0055, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1c9b174b17a0a0047b02b24755fc4554, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -103,14 +103,14 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.64, y: 0.16}
+    oldSize: {x: 0.5, y: 0.25}
     newSize: {x: 38.399998, y: 21.599998}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.64, y: 0.16}
+  m_Size: {x: 0.5, y: 0.25}
   m_EdgeRadius: 0
 --- !u!50 &8736401816216504429
 Rigidbody2D:
@@ -151,7 +151,7 @@ PlatformEffector2D:
   m_SurfaceArc: 180
   m_UseSideFriction: 0
   m_UseSideBounce: 0
-  m_SideArc: 0
+  m_SideArc: 1
 --- !u!114 &8736401816216504438
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -5,17 +5,18 @@ using UnityEngine;
 public class Door : MonoBehaviour
 {
     [SerializeField] Joinable doorSwitchNode;
+    [SerializeField] private Animator animator;
 
     // Update is called once per frame
     void Update()
     {
         if (doorSwitchNode.GetOutput())
         {
-            //open door
+            animator.SetTrigger("Open");
         }
         else
         {
-            //close door
+            animator.SetTrigger("Close");
         }
     }
 }
