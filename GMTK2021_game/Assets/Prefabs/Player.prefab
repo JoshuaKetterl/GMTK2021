@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   JumpEvent: event:/sfxJump
-  LandingEvent: event:/sfxLand
+  LandingEvent: 
   movementSpeed: 6
   jumpVelocity: 7
   fallGravity: 4.5

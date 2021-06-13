@@ -119,10 +119,14 @@
 		<relationship name="effects">
 			<destination>{fcaf7a1c-c4a8-4510-aa6b-c415e0fbdf01}</destination>
 			<destination>{94f9fb27-954b-4bea-ab52-971850098495}</destination>
+			<destination>{4332b82b-6aee-4d78-9068-857b824d020a}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{9c18b700-64bc-4f94-b961-af3878d254ea}" />
 	<object class="SingleSound" id="{7b507719-91f7-4ee3-9770-049e47e3de28}">
+		<property name="volume">
+			<value>10</value>
+		</property>
 		<relationship name="modulators">
 			<destination>{22cf2654-2a88-4f4f-b829-382d06e29a68}</destination>
 		</relationship>
@@ -139,6 +143,11 @@
 	<object class="MixerBusPanner" id="{ed72914f-fe19-420f-b6ef-a74704263ef7}" />
 	<object class="MixerBusFader" id="{fcaf7a1c-c4a8-4510-aa6b-c415e0fbdf01}" />
 	<object class="SpatialiserEffect" id="{94f9fb27-954b-4bea-ab52-971850098495}" />
+	<object class="GainEffect" id="{4332b82b-6aee-4d78-9068-857b824d020a}">
+		<property name="gain">
+			<value>10</value>
+		</property>
+	</object>
 	<object class="RandomizerModulator" id="{22cf2654-2a88-4f4f-b829-382d06e29a68}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>pitch</value>
