@@ -6,9 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/TestMechanics.unity
-    guid: 15cb38a520fe0b84da6efa52e6def4c3
-  - enabled: 1
     path: Assets/Scenes/main_scene.unity
     guid: 662a63fb85d9bbe42a2c9dcff2a88f8f
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level_1.unity
+    guid: f23d96b37e230e042bbf1b19f52f68a3
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level2.unity
+    guid: baa4a2483de25274e98c31d823a3725d
+  - enabled: 1
+    path: Assets/Scenes/TestMechanics.unity
+    guid: 15cb38a520fe0b84da6efa52e6def4c3
   m_configObjects: {}

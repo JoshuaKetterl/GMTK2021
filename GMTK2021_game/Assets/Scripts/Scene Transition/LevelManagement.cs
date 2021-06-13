@@ -8,12 +8,6 @@ public class LevelManagement : MonoBehaviour
     [SerializeField] private Animator transitionAnimation;
     [SerializeField] private float transitionTime = 1f;
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.L))
-            NextLevel();
-    }
-
     void NextLevel()
     {
         StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + 1));
@@ -26,5 +20,11 @@ public class LevelManagement : MonoBehaviour
         yield return new WaitForSeconds(transitionTime);
 
         SceneManager.LoadScene(levelIndex);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("NextScene"))
+            NextLevel();
     }
 }
