@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [FMODUnity.EventRef] public string JumpEvent = "";
+    [FMODUnity.EventRef] public string LandingEvent = "";
+
     private Vector3 movement;
     private Rigidbody2D rb;
     private BoxCollider2D boxCollider2D;
@@ -137,6 +140,7 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("Idle", false);
 
         rb.AddForce(Vector2.up * jumpVelocity, ForceMode2D.Impulse);
+        FMODUnity.RuntimeManager.PlayOneShot(JumpEvent, transform.position);
 
         canJump = false;
         coyoteTimeCounter = 0;

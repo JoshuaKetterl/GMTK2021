@@ -8,6 +8,8 @@ public class LevelManagement : MonoBehaviour
     [SerializeField] private Animator transitionAnimation;
     [SerializeField] private float transitionTime = 1f;
 
+    [FMODUnity.EventRef] public string LevelCompleteEvent = "";
+
     void NextLevel()
     {
         StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + 1));
@@ -30,7 +32,10 @@ public class LevelManagement : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("NextScene"))
+        {
+            FMODUnity.RuntimeManager.PlayOneShot(LevelCompleteEvent, transform.position);
             NextLevel();
+        }
         else if (collision.gameObject.CompareTag("Restart"))
             RestartLevel();
     }
