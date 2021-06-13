@@ -21,6 +21,7 @@ public class Door : MonoBehaviour
             {
                 animator.SetTrigger("Open");
                 FMODUnity.RuntimeManager.PlayOneShot(DoorOpenEvent, transform.position);
+                open = true;
             }
         }
         else
@@ -29,6 +30,7 @@ public class Door : MonoBehaviour
             {
                 animator.SetTrigger("Close");
                 FMODUnity.RuntimeManager.PlayOneShot(DoorCloseEvent, transform.position);
+                open = false;
             }
         }
     }
