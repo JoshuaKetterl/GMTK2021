@@ -191,7 +191,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("Idle", true);
         }
 
-        if (movement.x != 0)
+        if (movement.x != 0 && rb.velocity.y <= 0)
         {
             animator.SetBool("Jumping", false);
             animator.SetBool("Falling", false);
@@ -199,7 +199,7 @@ public class PlayerMovement : MonoBehaviour
             //animator.SetBool("Climbing", false);
             animator.SetBool("Idle", false);
         }
-        else if (movement.x == 0 & movement.y == 0 && CheckGround())
+        else if ((movement.x == 0 & movement.y == 0 && CheckGround()) || (rb.velocity.y <= 0 && rb.velocity.x <= 0))
         {
             animator.SetBool("Jumping", false);
             animator.SetBool("Falling", false);
@@ -211,7 +211,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FallingAnimation()
     {
-        if (rb.velocity.y < -0.2)
+        if (rb.velocity.y < -0.2 && !isClimbing)
         {
             animator.SetBool("Jumping", false);
             animator.SetBool("Falling", true);

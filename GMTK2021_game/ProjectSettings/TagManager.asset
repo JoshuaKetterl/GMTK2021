@@ -8,6 +8,7 @@ TagManager:
   - Joinable
   - Door
   - Ladder
+  - NextScene
   layers:
   - Default
   - TransparentFX
