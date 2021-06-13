@@ -206,6 +206,7 @@ public class JoinManager : MonoBehaviour
 
     public static int GetUniqueID()
     {
-        return idCounter++;
+        idCounter++;
+        return idCounter;
     }
 }
