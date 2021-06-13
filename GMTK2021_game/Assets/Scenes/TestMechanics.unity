@@ -358,6 +358,8 @@ MonoBehaviour:
   joinManager: {fileID: 0}
   joinedInputs: []
   joinedOutputs: []
+  rayDistance: 10
+  target: {fileID: 0}
 --- !u!114 &946195727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -923,11 +925,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1437022980257041051, guid: 013716be54431f14e996c73fae4b4fdb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.99
+      value: -6.71
       objectReference: {fileID: 0}
     - target: {fileID: 1437022980257041051, guid: 013716be54431f14e996c73fae4b4fdb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.34
+      value: 1.67
       objectReference: {fileID: 0}
     - target: {fileID: 1437022980257041051, guid: 013716be54431f14e996c73fae4b4fdb, type: 3}
       propertyPath: m_LocalPosition.z
@@ -961,44 +963,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1437022980257041052, guid: 013716be54431f14e996c73fae4b4fdb, type: 3}
-      propertyPath: m_SortingLayer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1437022980257041052, guid: 013716be54431f14e996c73fae4b4fdb, type: 3}
-      propertyPath: m_SortingOrder
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1437022980257041052, guid: 013716be54431f14e996c73fae4b4fdb, type: 3}
-      propertyPath: m_SortingLayerID
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1437022980257041055, guid: 013716be54431f14e996c73fae4b4fdb, type: 3}
-      propertyPath: raypoint
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1437022980257041055, guid: 013716be54431f14e996c73fae4b4fdb, type: 3}
-      propertyPath: ladderRaycastDistance
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1437022980257041055, guid: 013716be54431f14e996c73fae4b4fdb, type: 3}
-      propertyPath: raycastLayerMask.m_Bits
-      value: 448
-      objectReference: {fileID: 0}
-    - target: {fileID: 1437022980257041055, guid: 013716be54431f14e996c73fae4b4fdb, type: 3}
-      propertyPath: raycastLadderLayerMask.m_Bits
-      value: 256
-      objectReference: {fileID: 0}
     - target: {fileID: 1437022980257041056, guid: 013716be54431f14e996c73fae4b4fdb, type: 3}
       propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 1437022980257041056, guid: 013716be54431f14e996c73fae4b4fdb, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1437022980257041056, guid: 013716be54431f14e996c73fae4b4fdb, type: 3}
-      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []

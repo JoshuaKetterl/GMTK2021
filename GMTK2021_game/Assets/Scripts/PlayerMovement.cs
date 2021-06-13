@@ -26,6 +26,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isClimbing;
 
+    private Animator animator;
+
     public Vector3 Movement { get => movement; }
 
     void Start()
@@ -34,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         boxCollider2D = GetComponent<BoxCollider2D>();
         playerSpriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -75,6 +78,9 @@ public class PlayerMovement : MonoBehaviour
 
         FlipPlayer();
 
+        Animations();
+        FallingAnimation();
+
         print(rb.gravityScale);
     }
 
@@ -84,24 +90,24 @@ public class PlayerMovement : MonoBehaviour
 
         /*if (!isClimbing && rb.gravityScale != 0)
         {*/
-            if (canJump || (CheckGround() && jumpAfterLanding))
-            {
-                Jump();
-            }
+        if (canJump || (CheckGround() && jumpAfterLanding))
+        {
+            Jump();
+        }
 
-            if (canJump || CheckGround() || coyoteTimeCounter > 0)
-            {
-                rb.gravityScale = 1f;
-            }
-            else if (rb.velocity.y < jumpVelocity / 1.7)
-            {
-                rb.gravityScale = fallGravity;
-            }
-            else if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
-            {
-                rb.gravityScale = lowJumpGravity;
-            }
-            else rb.gravityScale = 1f;
+        if (canJump || CheckGround() || coyoteTimeCounter > 0)
+        {
+            rb.gravityScale = 1f;
+        }
+        else if (rb.velocity.y < jumpVelocity / 1.7)
+        {
+            rb.gravityScale = fallGravity;
+        }
+        else if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
+        {
+            rb.gravityScale = lowJumpGravity;
+        }
+        else rb.gravityScale = 1f;
         //}
     }
 
@@ -124,7 +130,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
+        animator.SetBool("Jumping", true);
+        animator.SetBool("Falling", false);
+        animator.SetBool("Walking", false);
+        animator.SetBool("Climbing", false);
+        animator.SetBool("Idle", false);
+
         rb.AddForce(Vector2.up * jumpVelocity, ForceMode2D.Impulse);
+
         canJump = false;
         coyoteTimeCounter = 0;
         //registerJumpBeforeLandingTimer = 0;
@@ -143,6 +156,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isClimbing)
         {
+            animator.SetBool("Jumping", false);
+            animator.SetBool("Falling", false);
+            animator.SetBool("Walking", false);
+            animator.SetBool("Climbing", true);
+            animator.SetBool("Idle", false);
+
             rb.gravityScale = 0;
             rb.velocity = Vector2.zero;
             rb.velocity = new Vector2(rb.velocity.x, movement.y * movementSpeed);
@@ -151,7 +170,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if(collision.CompareTag("Ladder"))
+        if (collision.CompareTag("Ladder"))
         {
             LadderClimb();
         }
@@ -162,6 +181,47 @@ public class PlayerMovement : MonoBehaviour
         if (collision.CompareTag("Ladder"))
         {
             rb.gravityScale = fallGravity;
+        }
+    }
+
+    private void Animations()
+    {
+        if (!(animator.GetBool("Jumping")) && !(animator.GetBool("Falling")) && !(animator.GetBool("Walking")) && !(animator.GetBool("Climbing")))
+        {
+            animator.SetBool("Idle", true);
+        }
+
+        if (movement.x != 0)
+        {
+            animator.SetBool("Jumping", false);
+            animator.SetBool("Falling", false);
+            animator.SetBool("Walking", true);
+            //animator.SetBool("Climbing", false);
+            animator.SetBool("Idle", false);
+        }
+        else if (movement.x == 0 & movement.y == 0 && CheckGround())
+        {
+            animator.SetBool("Jumping", false);
+            animator.SetBool("Falling", false);
+            animator.SetBool("Walking", false);
+            //animator.SetBool("Climbing", false);
+            animator.SetBool("Idle", true);
+        }
+    }
+
+    private void FallingAnimation()
+    {
+        if (rb.velocity.y < -0.2)
+        {
+            animator.SetBool("Jumping", false);
+            animator.SetBool("Falling", true);
+            animator.SetBool("Walking", false);
+            animator.SetBool("Climbing", false);
+            animator.SetBool("Idle", false);
+        }
+        else
+        {
+            animator.SetBool("Falling", false);
         }
     }
 }
