@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [FMODUnity.EventRef] public string JumpEvent = "";
-    [FMODUnity.EventRef] public string LandingEvent = "";
+    //[FMODUnity.EventRef] public string LandingEvent = "";
 
     private Vector3 movement;
     private Rigidbody2D rb;
