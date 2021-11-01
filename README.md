@@ -24,7 +24,7 @@ It is a puzzle game about joining together logic nodes and trying to find your w
 
 * [Grant](https://github.com/grantyoumanywishes): Music, Sound Design
 
-* [Joshua](https://github.com/JoshuaKetterl) and [Egor](https://github.com/Videt): Code
+* [Joshua](https://github.com/JoshuaKetterl) and [Egor](https://github.com/egor-shev): Code
 
 ## Team Portfolios
 
